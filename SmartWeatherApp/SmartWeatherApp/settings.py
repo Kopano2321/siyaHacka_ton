@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+############################################################################################
+"This allows us to pull from the .env file into the app"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+############################################################################################
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9=a%ufv!g+yszy-cwrk1(#fwf+-@9*5wu_=xi65pe(drpunaw*'
+SECRET_KEY = os.getenv('DJANGO_SECURITY_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +39,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    ##############################
+    #My installed_apps
+    'plants.apps.PlantsConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
+    ##############################
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
