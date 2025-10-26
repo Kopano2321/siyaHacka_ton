@@ -14,7 +14,7 @@
     <div class = "submit-container">
         {% if weather_data1%}
              <div class = "city-container">
-
+                {% include 'weather_app/city_weather.html' with weather_data=weather_data1 daily_forecasts=daily_forecasts1 %}
             </div>
         {% endif %}
     </div>
