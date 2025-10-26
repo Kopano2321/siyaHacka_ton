@@ -1,22 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Weather App</title>
+  <meta charset="UTF-8">
+  <title>Smart Weather App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="city1" placeholder="City name">
-        <button type="submit">Submit</button>
-    </form>
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-8 col-lg-6 col-xl-5">
 
-    <div class="submit-container">
-        {% if weather_data1 %}
-            <div class="city-container">
-                {% include 'weather_app/city_weather.html' with weather_data=weather_data1 daily_forecasts=daily_forecasts1 %}
-            </div>
+        <h3 class="mb-4 pb-2 fw-normal text-center">Check the Weather</h3>
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-group rounded mb-3">
+            <input type="search" class="form-control rounded" name="city1" placeholder="Enter City" aria-label="Search" required>
+            <button type="submit" class="input-group-text border-0 fw-bold btn btn-primary">Check!</button>
+          </div>
+        </form>
+
+        {% if error_message %}
+          <div class="alert alert-danger text-center">{{ error_message }}</div>
         {% endif %}
+
+        {% if weather_data1 %}
+        <div class="card shadow-sm border mt-4">
+          <div class="card-body text-center">
+            <h4 class="mb-1">{{ weather_data1.city }}</h4>
+            <img src="http://openweathermap.org/img/w/{{ weather_data1.icon }}.png" alt="{{ weather_data1.description }}">
+            <p class="mb-2">Temperature: <strong>{{ weather_data1.temperature }}°C</strong></p>
+            <p class="mb-0">{{ weather_data1.description|title }}</p>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if daily_forecasts1 %}
+        <div class="card shadow-sm border mt-4">
+          <div class="card-body">
+            <h5 class="text-center mb-4">5-Day Forecast</h5>
+            <div class="row g-3">
+              {% for forecast in daily_forecasts1 %}
+              <div class="col-6 text-center">
+                <div class="p-3 border rounded-3">
+                  <h6>{{ forecast.day }}</h6>
+                  <img src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="{{ forecast.description }}">
+                  <p class="small mb-1">{{ forecast.description }}</p>
+                  <p class="mb-0">
+                    <strong>{{ forecast.max_temp }}°C</strong> / 
+                    <small>{{ forecast.min_temp }}°C</small>
+                  </p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
     </div>
+  </div>
+</section>
 </body>
 </html>
