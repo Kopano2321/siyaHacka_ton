@@ -83,6 +83,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SmartWeatherApp.wsgi.application'
 
+####################################################################
+AUTH_USER_MODEL = 'plants.CustomUser'  # Custom authentication for the extended user model
+####################################################################
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
