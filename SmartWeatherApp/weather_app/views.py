@@ -59,7 +59,7 @@ def fetch_weather_and_forecast(city, api_key, current_weather_url, forecast_url)
 
     # Simplify to one summary per day
     daily_forecasts = []
-    for day, data in list(daily_data.items())[:5]:
+    for day, data in list(daily_data.items())[:7]:
         daily_forecasts.append({
             "day": day,
             "min_temp": round(min(data["temps"]), 2),
