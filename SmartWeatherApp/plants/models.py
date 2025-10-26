@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from datetime import date
 
 User = settings.AUTH_USER_MODEL #sets user to the custom user field
 
@@ -16,7 +17,7 @@ class CustomUser(AbstractUser):
         return f"{self.username}"
     
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     picture = models.ImageField()
     date_created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,13 +61,20 @@ class Soil(models.Model):
 
 class Crops(models.Model):
     name = models.CharField(max_length=20, blank=False, null=False)
-    season = models.ForeignKey(Seasons, on_delete=models.CASCADE)
-    soilType = models.ForeignKey(Soil, on_delete=models.CASCADE)
-    waterLevel = models.ForeignKey(Water, on_delete=models.CASCADE)
-    lightLevel = models.ForeignKey(Light, on_delete=models.CASCADE)
+    season = models.ForeignKey(Seasons, on_delete=models.CASCADE, related_name='crops')
+    soilType = models.ForeignKey(Soil, on_delete=models.CASCADE, related_name='crops')
+    waterLevel = models.ForeignKey(Water, on_delete=models.CASCADE, related_name='crops')
+    lightLevel = models.ForeignKey(Light, on_delete=models.CASCADE, related_name='crops')
     temperatureL = models.IntegerField()
     temperatureH = models.IntegerField()
     timeToMaturity = models.IntegerField()
 
     def __str__(self):
         return f"{self.name}"
+    
+    #def last(self):
+    #    return (date.today() - self.).days
+    #    pass
+
+class MyCrops(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='myCrops')
