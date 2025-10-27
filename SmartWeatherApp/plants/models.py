@@ -21,8 +21,8 @@ class Profile(models.Model):
     picture = models.ImageField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    address = models.CharField(max_length=50)
-    city = models.CharField(max_length=50, blank=False, null=False)
+    address = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
 
 
     def __str__(self):
@@ -128,3 +128,38 @@ class MyCrops(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.crop.name}"
+
+class Field(models.Model):
+    name = models.CharField(max_length=100)
+    section = models.CharField(max_length=100)
+    plot = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Task(models.Model):
+    PRIORITY_CHOICES = [
+        ('urgent', 'Urgent'),
+        ('high', 'High'),
+        ('medium', 'Medium'),
+        ('low', 'Low'),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    category = models.CharField(max_length=100)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES)
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class ClimateData(models.Model):
+    avg_moisture = models.FloatField()
+    avg_temperature = models.FloatField()
+    target_moisture = models.FloatField(default=65)
+    normal_temperature = models.FloatField(default=25)
+    date_recorded = models.DateTimeField(auto_now_add=True)

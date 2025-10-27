@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmWatch | Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo span {
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: rgba(255,255,255,0.2);
+    }
+    
+    main {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .progress {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .progress h2 {
+      margin-bottom: 0.5rem;
+      color: #2e7d32;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: #4caf50;
+      transition: width 0.5s ease;
+    }
+    
+    .climate-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border-left: 4px solid #4caf50;
+    }
+    
+    .card.red {
+      border-left-color: #e53935;
+    }
+    
+    .card.green {
+      border-left-color: #4caf50;
+    }
+    
+    .card h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      border-bottom-color: #2e7d32;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    
+    .section-title {
+      margin: 1.5rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .task {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    
+    .task h4 {
+      color: #2e7d32;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .tag.high {
+      background-color: #ffebee;
+      color: #e53935;
+    }
+    
+    .tag.medium {
+      background-color: #fff3e0;
+      color: #ff9800;
+    }
+    
+    .tag.low {
+      background-color: #e8f5e8;
+      color: #4caf50;
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      main {
+        padding: 1rem;
+      }
+      
+      .climate-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span>🌱</span> FarmWatch
+    </div>
+    <nav>
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Tasks</a>
+      <a href="#">Fields</a>
+      <a href="#">Settings</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Progress Section -->
+    <div class="progress">
+      <h2>Today's Progress</h2>
+      {% if total_tasks > 0 %}
+        <p>{{ completed_tasks }} of {{ total_tasks }} tasks completed</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ completion_rate }}%;"></div>
+        </div>
+        <p style="text-align:right; color:#555; margin-top:5px;">{{ completion_rate }}% Complete</p>
+      {% else %}
+        <p>No tasks scheduled for today</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;"></div>
+        </div>
+        <p style="text-align:right; color:#555; margin-top:5px;">0% Complete</p>
+      {% endif %}
+    </div>
+
+    <!-- Climate Cards -->
+    <div class="climate-cards">
+      <div class="card red">
+        <h3>{{ urgent_tasks|default:0 }}</h3>
+        <small>Urgent Tasks</small><br>
+        {% if urgent_tasks > 0 %}
+          <small style="color: #e53935;">Requires immediate action</small>
+        {% else %}
+          <small>All systems normal</small>
+        {% endif %}
+      </div>
+
+      {% if climate %}
+      <div class="card">
+        <h3>{{ climate.avg_moisture|floatformat:"0" }}%</h3>
+        <small>Avg Moisture</small><br>
+        {% if climate.avg_moisture < climate.target_moisture %}
+          <small style="color: #e53935;">{{ climate.target_moisture|floatformat:"0" }}% target not met</small>
+        {% else %}
+          <small style="color: #4caf50;">Within optimal range</small>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>{{ climate.avg_temperature|floatformat:"0" }}°C</h3>
+        <small>Avg Temperature</small><br>
+        {% if climate.avg_temperature > climate.normal_temperature %}
+          <small style="color: #e53935;">{{ climate.avg_temperature|floatformat:"0" }}°C above normal</small>
+        {% else %}
+          <small style="color: #4caf50;">Normal range</small>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="card green">
+        <h3>{{ completed_tasks|default:0 }}</h3>
+        <small>Tasks Completed</small><br>
+        <small>{{ completion_rate|default:0 }}% done today</small>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active">My Tasks</button>
+      <button class="tab">Climate Alerts</button>
+    </div>
+
+    <!-- Tasks by Priority -->
+    {% if tasks %}
+      {% for priority, color in priorities %}
+        <h3 class="section-title" style="color: {{ color }}">
+          {{ priority|capfirst }} Priority
+        </h3>
+
+        {% for task in tasks %}
+          {% if task.priority == priority %}
+            <div class="task">
+              <h4>{{ task.title }}</h4>
+              <p>{{ task.description }}</p>
+              <p><small>{{ task.category }} | {{ task.field.section }}, {{ task.field.plot }}</small></p>
+              <span class="tag {{ task.priority }}">{{ task.priority|capfirst }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+      <div class="task">
+        <h4>No tasks available</h4>
+        <p>You don't have any tasks scheduled for today.</p>
+      </div>
+    {% endif %}
+  </main>
+</body>
+</html>

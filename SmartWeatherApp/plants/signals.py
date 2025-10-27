@@ -5,8 +5,11 @@ from .models import CustomUser, Profile
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance, city='')  # default city blank; user can edit later
+        Profile.objects.create(user=instance, city='', address='')
 
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    try:
+        instance.profile.save()
+    except Profile.DoesNotExist:
+        Profile.objects.create(user=instance, city='', address='')

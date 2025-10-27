@@ -11,6 +11,7 @@ from datetime import date
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
+from .models import Task, ClimateData
 
 ##############################################################################################################################
 #def add_crop(request):
@@ -175,3 +176,36 @@ def get_weather_alert_placeholder(mycrop):
 def logout_view(request):
     logout(request)
     return render(request, 'plants/logout.html')
+
+@login_required
+def dashboard(request):
+    # Get climate data (latest entry)
+    climate = ClimateData.objects.last()
+
+    # Get all tasks
+    all_tasks = Task.objects.all()
+    completed_tasks = all_tasks.filter(completed=True).count()
+    total_tasks = all_tasks.count()
+    urgent_tasks = all_tasks.filter(priority='urgent').count()
+
+    # Calculate completion percentage
+    completion_rate = int((completed_tasks / total_tasks) * 100) if total_tasks else 0
+
+    priorities = [
+        ('urgent', 'red'),
+        ('high', 'brown'),
+        ('medium', '#81c784'),
+        ('low', '#bdbdbd'),
+    ]
+
+    context = {
+        'climate': climate,
+        'urgent_tasks': urgent_tasks,
+        'completed_tasks': completed_tasks,
+        'total_tasks': total_tasks,
+        'completion_rate': completion_rate,
+        'tasks': all_tasks,
+        'priorities': priorities,
+    }
+
+    return render(request, 'plants/dashboard2.html', context)

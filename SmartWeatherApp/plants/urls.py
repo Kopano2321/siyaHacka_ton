@@ -18,5 +18,5 @@ urlpatterns = [
     path('crop/<int:pk>/', views.crop_detail, name='crop_detail'),
     path('crop/<int:pk>/water/', views.mark_watered, name='mark_watered'),
 
-    path('logout/', views.logout_view, name='logout'),
+    path('logout/', views.logout_view, name='logout'),      #remove the duplicate
 ]
