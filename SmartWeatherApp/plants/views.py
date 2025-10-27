@@ -85,6 +85,8 @@ def dashboard(request):
         mc.compute_mature_flag()
     return render(request, 'plants/dashboard.html', {'mycrops': mycrops})
 
+
+
 @login_required
 def add_mycrop(request):
     if request.method == 'POST':
@@ -177,6 +179,7 @@ def logout_view(request):
     logout(request)
     return render(request, 'plants/logout.html')
 
+#########################################################################################################################
 @login_required
 def dashboard(request):
     # Get climate data (latest entry)
@@ -188,15 +191,16 @@ def dashboard(request):
     total_tasks = all_tasks.count()
     urgent_tasks = all_tasks.filter(priority='urgent').count()
 
+    # Group tasks by priority
+    tasks_by_priority = {
+        'urgent': all_tasks.filter(priority='urgent'),
+        'high': all_tasks.filter(priority='high'),
+        'medium': all_tasks.filter(priority='medium'),
+        'low': all_tasks.filter(priority='low'),
+    }
+
     # Calculate completion percentage
     completion_rate = int((completed_tasks / total_tasks) * 100) if total_tasks else 0
-
-    priorities = [
-        ('urgent', 'red'),
-        ('high', 'brown'),
-        ('medium', '#81c784'),
-        ('low', '#bdbdbd'),
-    ]
 
     context = {
         'climate': climate,
@@ -204,8 +208,8 @@ def dashboard(request):
         'completed_tasks': completed_tasks,
         'total_tasks': total_tasks,
         'completion_rate': completion_rate,
-        'tasks': all_tasks,
-        'priorities': priorities,
+        'tasks_by_priority': tasks_by_priority,
     }
 
     return render(request, 'plants/dashboard2.html', context)
+#########################################################################################################################
