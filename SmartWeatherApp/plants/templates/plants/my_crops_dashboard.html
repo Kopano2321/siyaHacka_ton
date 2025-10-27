@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>My Crops Dashboard</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Crop Name</th>
+        <th>Planted Date</th>
+        <th>Last Watered</th>
+        <th>Status</th>
+        <th>Harvest Readiness</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for crop in my_crops %}
+      <tr>
+        <td>{{ crop.crop.name }}</td>
+        <td>{{ crop.planted }}</td>
+        <td>{{ crop.lastWatered }}</td>
+        <td>
+          {% if crop.need_watering %}
+            <span style="color:red;">Needs Watering 💧</span>
+          {% else %}
+            <span style="color:green;">Healthy ✅</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if crop.mature %}
+            <span style="color:orange;">Ready to Harvest 🌾</span>
+          {% else %}
+            Not Ready
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5">No crops added yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

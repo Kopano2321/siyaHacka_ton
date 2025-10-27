@@ -1,0 +1,18 @@
+<!-- farm/templates/farm/dashboard.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Crops</h2>
+<p><a href="{% url 'plants:add_mycrop' %}">Add a crop</a> | <a href="{% url 'plants:logout' %}">Logout</a></p>
+<ul>
+  {% for mc in mycrops %}
+  <li>
+    <a href="{% url 'plants:crop_detail' mc.pk %}">{{ mc.crop.name }}</a>
+    — Planted: {{ mc.planted }} | Last watered: {{ mc.lastWatered }} |
+    Days since last water: {{ mc.days_since_last_water }} |
+    {% if mc.need_watering %}<strong>Needs watering</strong>{% else %}OK{% endif %}
+  </li>
+  {% empty %}
+  <li>No crops yet</li>
+  {% endfor %}
+</ul>
+{% endblock %}

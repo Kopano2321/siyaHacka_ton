@@ -1,0 +1,18 @@
+<!-- farm/templates/farm/crop_detail.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ mycrop.crop.name }} — Details</h2>
+<p>Planted: {{ mycrop.planted }}</p>
+<p>Days since planted: {{ mycrop.days_since_planted }}</p>
+<p>Last watered: {{ mycrop.lastWatered }} ({{ mycrop.days_since_last_water }} days ago)</p>
+<p>Water need level: {{ mycrop.crop.waterLevel.waterLevel }}</p>
+<p>{% if needs_water %}<strong>This crop needs watering.</strong>{% else %}Does not need watering right now.{% endif %}</p>
+<p>Days until maturity: {{ days_until_maturity }}</p>
+{% if harvest_suggestion %}
+  <p><strong>Suggestion:</strong> {{ harvest_suggestion }}</p>
+{% endif %}
+<form action="{% url 'plants:mark_watered' mycrop.pk %}" method="post">{% csrf_token %}
+  <button type="submit">Mark watered today</button>
+</form>
+<p><a href="{% url 'plants:edit_mycrop' mycrop.pk %}">Edit</a> | <a href="{% url 'plants:dashboard' %}">Back</a></p>
+{% endblock %}

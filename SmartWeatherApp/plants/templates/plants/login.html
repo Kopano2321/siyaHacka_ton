@@ -1,0 +1,11 @@
+<!-- farm/templates/farm/login.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+<p>Don't have account? <a href="{% url 'plants:signup' %}">Sign up</a></p>
+{% endblock %}
