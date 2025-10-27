@@ -1,18 +1,19 @@
-<!-- farm/templates/farm/dashboard.html -->
-{% extends "base.html" %}
-{% block content %}
-<h2>Your Crops</h2>
-<p><a href="{% url 'plants:add_mycrop' %}">Add a crop</a> | <a href="{% url 'plants:logout' %}">Logout</a></p>
-<ul>
-  {% for mc in mycrops %}
-  <li>
-    <a href="{% url 'plants:crop_detail' mc.pk %}">{{ mc.crop.name }}</a>
-    — Planted: {{ mc.planted }} | Last watered: {{ mc.lastWatered }} |
-    Days since last water: {{ mc.days_since_last_water }} |
-    {% if mc.need_watering %}<strong>Needs watering</strong>{% else %}OK{% endif %}
-  </li>
-  {% empty %}
-  <li>No crops yet</li>
-  {% endfor %}
-</ul>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | SmartWeather</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>🌦️ SmartWeather Dashboard</h1>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <a href="{% url 'profile' %}"><button>Profile</button></a>
+      <a href="{% url 'weather' %}"><button>Check Weather</button></a>
+      <a href="{% url 'add_crop' %}"><button>Add Crop</button></a>
+      <a href="{% url 'crops_dashboard' %}"><button>My Crops Dashboard</button></a>
+    </div>
+  </div>
+</body>
+</html>

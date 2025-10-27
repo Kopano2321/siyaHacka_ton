@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile | SmartWeather</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Hello, {{ user.username }} 🌿</h1>
+    <h3>Email: {{ user.email }}</h3>
+    <div style="margin-top: 2rem;">
+      <a href="{% url 'dashboard' %}"><button>Go to Dashboard</button></a>
+      <a href="{% url 'logout' %}"><button style="background:#f44336;">Logout</button></a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Crop | SmartWeather</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Add a New Crop 🌽</h1>
+    <form method="POST" action="{% url 'add_crop' %}">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Crop Name" required>
+      <input type="text" name="type" placeholder="Crop Type" required>
+      <input type="number" name="area" placeholder="Area (hectares)" required>
+      <button type="submit">Add Crop</button>
+    </form>
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+  </div>
+</body>
+</html>
